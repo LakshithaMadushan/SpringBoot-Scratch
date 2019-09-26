@@ -1,8 +1,10 @@
 <html>
 <head><title>Home Page</title></head>
+<link rel="stylesheet" th:attr="href='/css/' + 'theme-' + ${#themes.code('brand')} + '.css'"    />
 <body>
-<h1>Hello !</h1>
+<h1 class="hello">Hello !</h1>
 <p>Welcome to <span th:text="${appName}">Our App</span></p>
+<p>Welcome to <span th:text="${#themes.code('brand')}">My brand</span></p>
 <a th:href="@{/logout}">LogOut</a>
 </body>
 </html>

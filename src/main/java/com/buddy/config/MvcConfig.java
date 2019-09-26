@@ -5,12 +5,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.ui.context.support.ResourceBundleThemeSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.theme.CookieThemeResolver;
+import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 
 import java.io.File;
 import java.util.Locale;
@@ -55,17 +58,43 @@ public class MvcConfig implements WebMvcConfigurer
         Next, we need to add an interceptor bean that will switch to a new locale based on the value of the lang parameter appended to a request:
      */
 
+    @Bean(name = "messageSource") public MessageSource messageSource()
+    {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasenames( "classpath:/i18n/messages" );
+        messageSource.setDefaultEncoding( "UTF-8" );
+        return messageSource;
+    }
+
+    @Bean
+    public ResourceBundleThemeSource themeSource()
+    {
+        ResourceBundleThemeSource themeSource = new ResourceBundleThemeSource();
+        themeSource.setBasenamePrefix( "theme-" );
+        return themeSource;
+    }
+
+    @Bean
+    public CookieThemeResolver themeResolver()
+    {
+        CookieThemeResolver themeResolver = new CookieThemeResolver();
+        themeResolver.setDefaultThemeName( "ONE" );
+        themeResolver.setCookieName( "my-theme-cookie" );
+        return themeResolver;
+    }
+
+    @Bean
+    public ThemeChangeInterceptor themeChangeInterceptor()
+    {
+        ThemeChangeInterceptor interceptor = new ThemeChangeInterceptor();
+        interceptor.setParamName( "brand" );
+        return interceptor;
+    }
+
     @Override
     public void addInterceptors( InterceptorRegistry registry )
     {
         registry.addInterceptor( localeChangeInterceptor() );
-    }
-
-    @Bean(name = "messageSource") public MessageSource messageSource()
-    {
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasenames("classpath:/i18n/messages");
-        messageSource.setDefaultEncoding( "UTF-8" );
-        return messageSource;
+        registry.addInterceptor( themeChangeInterceptor() );
     }
 }

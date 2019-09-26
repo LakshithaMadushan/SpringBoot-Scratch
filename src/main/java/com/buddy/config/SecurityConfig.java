@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
         // http.authorizeRequests().anyRequest().permitAll().and().csrf().disable();    // we're allowing unrestricted access to all endpoints.
 
         http.authorizeRequests()
-                .antMatchers( "/test", "/international" ).permitAll()
+                .antMatchers( "/test", "/international", "/css/**" ).permitAll()
                 .antMatchers( "/members/dog" ).hasRole( "DOG" )
                 .anyRequest().authenticated()
                 .and()
