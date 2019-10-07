@@ -21,7 +21,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if( auth != null )
         {
-            LOGGER.warn( "User: " + auth.getName()
+            LOGGER.warn( "Employee: " + auth.getName()
                     + " attempted to access the protected URL: "
                     + httpServletRequest.getRequestURI() );
         }

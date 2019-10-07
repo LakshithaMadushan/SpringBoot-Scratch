@@ -1,9 +1,14 @@
 package com.buddy.config;
 
+import com.buddy.interceptors.DataInterceptor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.cbor.MappingJackson2CborHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.ui.context.support.ResourceBundleThemeSource;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +23,10 @@ import org.springframework.web.servlet.theme.CookieThemeResolver;
 import org.springframework.web.servlet.theme.ThemeChangeInterceptor;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 @Configuration
@@ -97,7 +106,28 @@ public class MvcConfig implements WebMvcConfigurer
     public RestTemplate getRestTemplate()
     {
         RestTemplate restTemplate = new RestTemplate();
+
+
+        /*  The main problem here is content type [text/html;charset=iso-8859-1] received from the service, however the real content type should be application/json;charset=iso-8859-1
+        In order to overcome this you can introduce custom message converter. and register it for all kind of responses (i.e. ignore the response content type header). Just like this   */
+
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        //Add the Jackson Message converter
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+
+        // Note: here we are making this converter to process any kind of response,
+        // not only application/*json, which is the default behaviour
+        converter.setSupportedMediaTypes( Collections.singletonList( MediaType.ALL ) );
+        messageConverters.add( converter );
+        restTemplate.setMessageConverters( messageConverters );
+
         return restTemplate;
+    }
+
+    @Bean public DataInterceptor dataInterceptor()
+    {
+        DataInterceptor di = new DataInterceptor();
+        return di;
     }
 
     @Override
@@ -105,5 +135,6 @@ public class MvcConfig implements WebMvcConfigurer
     {
         registry.addInterceptor( localeChangeInterceptor() );
         registry.addInterceptor( themeChangeInterceptor() );
+        registry.addInterceptor( dataInterceptor() );
     }
 }

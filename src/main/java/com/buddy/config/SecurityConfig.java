@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
         // http.authorizeRequests().anyRequest().permitAll().and().csrf().disable();    // we're allowing unrestricted access to all endpoints.
 
         http.authorizeRequests()
-                .antMatchers( "/test", "/international", "/css/**", "/getAllUsers_WithGetForEntity" ).permitAll()
+                .antMatchers( "/test", "/international", "/css/**", "/employees/**" ).permitAll()
                 .antMatchers( "/members/dog" ).hasRole( "DOG" )
                 .anyRequest().authenticated()
                 .and()
@@ -52,13 +52,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     //    public UserDetailsService userDetailsService()
     //    {
     //        List<UserDetails> users = new ArrayList<>();
-    //        users.add( User.withDefaultPasswordEncoder()
+    //        users.add( Employee.withDefaultPasswordEncoder()
     //                .username( "buddy" )
     //                .password( "buddy@1234" )
     //                .roles( "USER" )
     //                .build() );
     //
-    //        users.add( User.withDefaultPasswordEncoder()
+    //        users.add( Employee.withDefaultPasswordEncoder()
     //                .username( "geethi" )
     //                .password( "geethi@1234" )
     //                .roles( "ADMIN" )
