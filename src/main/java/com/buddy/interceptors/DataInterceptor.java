@@ -12,12 +12,8 @@ public class DataInterceptor extends HandlerInterceptorAdapter
     private static Logger log = LoggerFactory.getLogger( DataInterceptor.class );
 
     @Override
-    public boolean preHandle(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Object handler ) throws Exception
+    public boolean preHandle( HttpServletRequest request, HttpServletResponse response, Object handler ) throws Exception
     {
-
         log.info( "Buddy Http Interceptor" + request.getRequestURI() );
 
         return true;
