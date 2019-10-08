@@ -1,0 +1,5 @@
+demo:
+  environment: prod
+  hosts:
+    - https://www.buddy1.com
+    - https://www.buddy2.com
