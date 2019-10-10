@@ -1,6 +1,7 @@
 package com.buddy.controller;
 
 import com.buddy.util.ConfigurationConstants;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -21,6 +22,9 @@ public class BuildInfoController
     private Environment environment;
 
     @RequestMapping(method = RequestMethod.GET)
+    @ApiOperation(value = "Finds Pets by status",
+            notes = "Multiple status values can be provided with comma seperated strings",
+            responseContainer = "List")
     public ResponseEntity<HashMap> buildInfo()
     {
         ResponseEntity<HashMap> returnResponse = null;
