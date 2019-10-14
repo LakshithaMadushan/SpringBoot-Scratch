@@ -58,6 +58,15 @@
         </dependency>
         <!-- END - Swagger -->
 
+        <!-- START - Unit Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <version>2.1.6.RELEASE</version>
+        </dependency>
+        <!-- END - Unit Test -->
+
     </dependencies>
     <profiles>
         <profile>
