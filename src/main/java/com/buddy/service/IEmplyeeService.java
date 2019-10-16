@@ -13,5 +13,9 @@ public interface IEmplyeeService
      */
     public String getAllEmployees_WithGetForEntity() throws Exception;
 
+    /**
+     * @return
+     * @throws Exception
+     */
     public List<Employee> getAllEmployees_WithExchange() throws Exception;
 }
